@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Muscle Coder">
 <meta property="og:description" content="反射 反射机制是 Java 语言提供的一种基础功能，赋予程序在 运行时 自省（introspect，官方用语）的能力。通过反射我们可以直接操作类或者对象，比如获取某个对象的类定义，获取类声明的属性和方法，调用方法或者构造对象，甚至可以 运行时 修改类定义。   在运行时能判断任意一个对象所属的类。 在运行时能构造任意一个类的对象。 在运行时判断任意一个类所具有的成员变量和方法。 在运行时调用任意一">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-25T03:26:21.614Z">
+<meta property="og:updated_time" content="2019-03-25T09:22:15.082Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java核心技术">
 <meta name="twitter:description" content="反射 反射机制是 Java 语言提供的一种基础功能，赋予程序在 运行时 自省（introspect，官方用语）的能力。通过反射我们可以直接操作类或者对象，比如获取某个对象的类定义，获取类声明的属性和方法，调用方法或者构造对象，甚至可以 运行时 修改类定义。   在运行时能判断任意一个对象所属的类。 在运行时能构造任意一个类的对象。 在运行时判断任意一个类所具有的成员变量和方法。 在运行时调用任意一">
@@ -340,34 +340,12 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-03-25T11:26:21+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-25T17:22:15+08:00">
                 2019-03-25
               </time>
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据结构与算法/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构与算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -422,6 +400,22 @@
 <li>动态代理类：实际调用被代理类的方法和属性的类</li>
 </ol>
 <p><strong>实现方式</strong><br>实现动态代理的方式很多，比如 JDK 自身提供的动态代理，就是主要利用了反射机制。还有其他的实现方式，比如利用字节码操作机制，类似 ASM、CGLIB（基于 ASM）、Javassist 等。<br>举例，常可采用的JDK提供的动态代理接口InvocationHandler来实现动态代理类。其中invoke方法是该接口定义必须实现的，它完成对真实方法的调用。通过InvocationHandler接口，所有方法都由该Handler来进行处理，即所有被代理的方法都由InvocationHandler接管实际的处理任务。此外，我们常可以在invoke方法实现中增加自定义的逻辑实现，实现对被代理类的业务逻辑无侵入</p>
+<p><strong>动态代理：JDK动态代理和CGLIB代理的区别？</strong><br>JDK动态代理只能对实现了接口的类生成代理，而不能针对类，<br><br>CGLIB是针对类实现代理，主要是对指定的类生成一个子类，覆盖其中的方法（继承）。</p>
+<p><strong>JDK Proxy 的优势：</strong></p>
+<ol>
+<li>最小化依赖关系，减少依赖意味着简化开发和维护，JDK 本身的支持，可能比 cglib 更加可靠。</li>
+<li>平滑进行 JDK 版本升级，而字节码类库通常需要进行更新以保证在新版 Java 上能够使用。</li>
+<li>代码实现简单。</li>
+</ol>
+<p><strong>基于类似 cglib 框架的优势：</strong></p>
+<ol>
+<li>有的时候调用目标可能不便实现额外接口，从某种角度看，限定调用者实现接口是有些侵入性的实践，类似 cglib 动态代理就没有这种限制。</li>
+<li>只操作我们关心的类，而不必为其他相关类增加工作量。</li>
+<li>高性能。<br><strong>Spring在选择用JDK还是CGLiB的依据是什么？</strong></li>
+<li>当Bean实现接口时，Spring就会用JDK的动态代理</li>
+<li>当Bean没有实现接口时，Spring使用CGlib是实现</li>
+<li>可以强制使用CGlib（在spring配置中加入&lt;aop:aspectj-autoproxy proxy-target-class=”true”/&gt;）</li>
+</ol>
 <h2 id="自动装箱、拆箱"><a href="#自动装箱、拆箱" class="headerlink" title="自动装箱、拆箱"></a>自动装箱、拆箱</h2><blockquote>
 <p>自动装箱实际上算是一种 <strong>语法糖</strong>。什么是语法糖？可以简单理解为 Java 平台为我们自动进行了一些转换，保证不同的写法在运行时等价，它们发生在编译阶段，也就是生成的字节码是一致的。</p>
 </blockquote>
