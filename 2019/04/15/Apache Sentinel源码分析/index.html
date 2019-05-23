@@ -88,11 +88,11 @@
 <meta property="og:description" content="关于Alibaba Sentinel是什么、以及具有哪些特性、怎么使用（Sentinel Demo 集锦）等等，可以查看官方github wiki说明，这里不详细展开。 整体时序图 初始化InitFunc框架提供InitFunc接口，用于实现首次执行时的初始化操作，因为是通过SPI机制进行加载，所有用户层可以自扩展自己的初始化操作，同时提供@InitOrder注解，用户控制执行顺序（越小越先执行）">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://martinbox.github.io/2019/04/15/Apache%20Sentinel源码分析/Sequence%20Sentinel.png">
-<meta property="og:image" content="https://martinbox.github.io/2019/04/15/Apache%20Sentinel源码分析/InitFunc_UNL.png">
+<meta property="og:image" content="https://martinbox.github.io/2019/04/15/Apache%20Sentinel源码分析/InitFunc%20UML.png">
 <meta property="og:image" content="https://martinbox.github.io/2019/04/15/Apache%20Sentinel源码分析/Sentinel_Entry_flow.png">
 <meta property="og:image" content="https://martinbox.github.io/2019/04/15/Apache%20Sentinel源码分析/Node.png">
 <meta property="og:image" content="https://martinbox.github.io/2019/04/15/Apache%20Sentinel源码分析/Rule_UML.png">
-<meta property="og:updated_time" content="2019-05-23T08:15:41.064Z">
+<meta property="og:updated_time" content="2019-05-23T08:19:24.924Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Alibaba Sentinel源码分析">
 <meta name="twitter:description" content="关于Alibaba Sentinel是什么、以及具有哪些特性、怎么使用（Sentinel Demo 集锦）等等，可以查看官方github wiki说明，这里不详细展开。 整体时序图 初始化InitFunc框架提供InitFunc接口，用于实现首次执行时的初始化操作，因为是通过SPI机制进行加载，所有用户层可以自扩展自己的初始化操作，同时提供@InitOrder注解，用户控制执行顺序（越小越先执行）">
@@ -346,7 +346,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-05-23T16:15:41+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-05-23T16:19:24+08:00">
                 2019-05-23
               </time>
             
@@ -409,8 +409,8 @@
       
         <p>关于<a href="https://github.com/alibaba/Sentinel/wiki/%E4%BB%8B%E7%BB%8D" target="_blank" rel="noopener">Alibaba Sentinel</a>是什么、以及具有哪些特性、怎么使用（<a href="https://github.com/alibaba/Sentinel/tree/master/sentinel-demo" target="_blank" rel="noopener">Sentinel Demo 集锦</a>）等等，可以查看官方github wiki说明，这里不详细展开。</p>
 <h2 id="整体时序图"><a href="#整体时序图" class="headerlink" title="整体时序图"></a>整体时序图</h2><p><img src="/2019/04/15/Apache Sentinel源码分析/Sequence Sentinel.png" alt=""></p>
-<h2 id="初始化InitFunc"><a href="#初始化InitFunc" class="headerlink" title="初始化InitFunc"></a>初始化InitFunc</h2><p>框架提供InitFunc接口，用于实现首次执行时的初始化操作，因为是通过SPI机制进行加载，所有用户层可以自扩展自己的初始化操作，同时提供<code>@InitOrder</code>注解，用户控制执行顺序（越小越先执行）。<br><img src="/2019/04/15/Apache Sentinel源码分析/InitFunc_UNL.png" alt=""></p>
-<h3 id="CommandCenterInitFunc"><a href="#CommandCenterInitFunc" class="headerlink" title="CommandCenterInitFunc"></a>CommandCenterInitFunc</h3><p>原通过SPI机制加载<code>CommandCenter</code>插件，启动client内置的http服务（NettyHttpCommandCenter采用Netty实现，SimpleHttpCommandCenter采用原生Socket实现），用于和sentinel-dashboard服务进行通讯，比如dashboard查询节点实时监控信息。</p>
+<h2 id="初始化InitFunc"><a href="#初始化InitFunc" class="headerlink" title="初始化InitFunc"></a>初始化InitFunc</h2><p>框架提供InitFunc接口，用于实现首次执行时的初始化操作，因为是通过SPI机制进行加载，所有用户层可以自扩展自己的初始化操作，同时提供<code>@InitOrder</code>注解，用户控制执行顺序（越小越先执行）。<br><img src="/2019/04/15/Apache Sentinel源码分析/InitFunc UML.png" alt=""></p>
+<h3 id="CommandCenterInitFunc"><a href="#CommandCenterInitFunc" class="headerlink" title="CommandCenterInitFunc"></a>CommandCenterInitFunc</h3><p>原通过SPI机制加载<code>CommandCenter</code>插件，启动client内置的http服务（<code>NettyHttpCommandCenter</code>采用Netty实现，<code>SimpleHttpCommandCenter</code>采用原生Socket实现），用于和sentinel-dashboard服务进行通讯，比如dashboard查询节点实时监控信息。</p>
 <h3 id="HeartbeatSenderInitFunc"><a href="#HeartbeatSenderInitFunc" class="headerlink" title="HeartbeatSenderInitFunc"></a>HeartbeatSenderInitFunc</h3><p>通过SPI机制加载<code>HeartbeatSender</code>插件，唯一实现类<code>SimpleHttpHeartbeatSender</code>，用于定时向sentinel-dashboard（uri=/registry/machine）发送心跳信息。多个控制台地址格式：ip1:port1,ip2:port2…</p>
 <h2 id="定义资源执行逻辑"><a href="#定义资源执行逻辑" class="headerlink" title="定义资源执行逻辑"></a>定义资源执行逻辑</h2><p>框架定义资源使用的是SphU.entry(…)函数，内部具体执行逻辑如下：<br><img src="/2019/04/15/Apache Sentinel源码分析/Sentinel_Entry_flow.png" alt=""></p>
 <p>具体插槽功能见官方说明：<a href="https://github.com/alibaba/Sentinel/wiki/Sentinel%E5%B7%A5%E4%BD%9C%E4%B8%BB%E6%B5%81%E7%A8%8B" target="_blank" rel="noopener">Sentinel工作主流程</a></p>
